@@ -4,6 +4,7 @@
   "description": "Api RESTFUL del Master en Frameworks",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Erik Gonzalez",
@@ -14,5 +15,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.10.7",
     "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
