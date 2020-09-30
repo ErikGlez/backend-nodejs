@@ -1,0 +1,11 @@
+{
+  "name": "backend-nodejs",
+  "version": "1.0.0",
+  "description": "Api RESTFUL del Master en Frameworks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Erik Gonzalez",
+  "license": "MIT"
+}
