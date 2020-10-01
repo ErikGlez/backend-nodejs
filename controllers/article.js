@@ -191,7 +191,7 @@ var controller = {
                 });
 
 
-            })
+            });
 
         } else {
             return res.status(200).send({
@@ -200,6 +200,29 @@ var controller = {
             });
         }
 
+    },
+
+    delete: (req, res)=>{
+
+        //Recoger el id de la url
+        var articleId = req.params.id;
+
+        // find and delete
+        Article.findOneAndDelete({_id: articleId},(err, articleRemoved)=>{
+
+            if(err || !articleRemoved){
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'Error al eliminar el artículo.'
+                });
+            }
+            return res.status(200).send({
+                status: 'success',
+                article: articleRemoved
+            });
+            
+        });
+       
     }
 
 
