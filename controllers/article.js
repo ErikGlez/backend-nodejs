@@ -74,27 +74,27 @@ var controller = {
 
     },
 
-    getArticles: (req, res)=>{
-        
-        var query =  Article.find({});
+    getArticles: (req, res) => {
 
-        var last = req.params.last;     
-        
-        if(last || last != undefined){
+        var query = Article.find({});
+
+        var last = req.params.last;
+
+        if (last || last != undefined) {
             query.limit(5);
         }
 
         //Find
-       query.sort('-_id').exec((err, articles)=>{
-            
-            if(err){
+        query.sort('-_id').exec((err, articles) => {
+
+            if (err) {
                 return res.status(500).send({
                     status: 'error',
                     message: 'Error al devolver los articulos.'
                 });
             }
 
-            if(!articles){
+            if (!articles) {
                 return res.status(404).send({
                     status: 'error',
                     message: 'No hay articulos para mostrar.'
@@ -109,13 +109,13 @@ var controller = {
 
     },
 
-    getArticle: (req, res )=>{
+    getArticle: (req, res) => {
 
         // Recoger el id de la url
         var articleId = req.params.id;
 
         // comprobar que existe
-        if(!articleId || articleId == null){
+        if (!articleId || articleId == null) {
             return res.status(404).send({
                 status: 'error',
                 message: 'El artículo no existe.'
@@ -123,10 +123,10 @@ var controller = {
         }
 
         // buscar el articulo
-        Article.findById(articleId, (err, article)=>{
-            
+        Article.findById(articleId, (err, article) => {
 
-            if(err || !article){
+
+            if (err || !article) {
                 return res.status(404).send({
                     status: 'error',
                     message: 'No existe el articulo.'
@@ -140,9 +140,66 @@ var controller = {
             });
 
 
-      
+
         });
-        
+
+    },
+
+    update: (req, res) => {
+
+        // Recorger el id del articulo por la url
+        var articleId = req.params.id;
+
+        // Recoger los datos que llegan por put
+        var params = req.body;
+
+        // Validar los datos
+        try {
+            var validate_title = !validator.isEmpty(params.title);
+            var validate_content = !validator.isEmpty(params.content);
+
+        } catch (err) {
+            return res.status(200).send({
+                status: 'error',
+                message: 'Faltan datos por enviar'
+            });
+        }
+
+        if (validate_title && validate_content) {
+            // Find and update
+            Article.findByIdAndUpdate({ _id: articleId }, params, { new: true }, (err, articleUpdated) => {
+                if (err) {
+                    // Devolver respuesta
+                    return res.status(500).send({
+                        status: 'error',
+                        message: 'Error al actualizar'
+                    });
+                }
+
+                if (!articleUpdated) {
+                    // Devolver respuesta
+                    return res.status(404).send({
+                        status: 'error',
+                        message: 'No existe el articulo'
+                    });
+                }
+
+                // Devolver respuesta
+                return res.status(200).send({
+                    status: 'success',
+                    article: articleUpdated
+                });
+
+
+            })
+
+        } else {
+            return res.status(200).send({
+                status: 'error',
+                message: 'Los datos no son validos.'
+            });
+        }
+
     }
 
 
