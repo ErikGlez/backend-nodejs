@@ -63,7 +63,7 @@ var controller = {
                 // devolver respuesta
                 return res.status(200).send({
                     status: 'success',
-                    articleStored
+                    article: articleStored
                 });
 
             });
